@@ -1,5 +1,4 @@
 import express from 'express';
-import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
@@ -9,11 +8,7 @@ import config from './config';
 const app = express();
 const { dbConfig, port } = config;
 
-console.log(dbConfig);
-
 const mongoServer = new MongoMemoryServer(dbConfig);
-
-app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -44,10 +39,6 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
-});
-
-app.get('/', (req, res) => {
-    res.render('index');
 });
 
 app.use('/api/', championsRoutes);

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import ChampionController from '../controller/Champion';
-import fs from 'fs';
 
 const controller = new ChampionController();
 const router = Router();
@@ -21,10 +20,6 @@ router.post('/champion', (req, res) => {
         .then(result => {
             res.status(200).send({result});
         });
-});
-
-router.post('/champions', (req, res) => {
-    const content = fs.readFileSync(req.query);
 });
 
 export default router;
