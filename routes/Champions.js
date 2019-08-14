@@ -13,16 +13,18 @@ router.get('/champions', (req, res) => {
 });
 
 router.post('/champion', (req, res) => {
-    controller.createChampion(req.query)
+    console.log(req);
+    if (req.body !== null || Object.keys(req.body).length === 0) {
+        res.status(301).send({message: 'Request-Body is empty'});
+    }
+    controller.createChampion(req.body)
         .then(result => {
             res.status(200).send({result});
         });
 });
 
 router.post('/champions', (req, res) => {
-    console.log(req);
     const content = fs.readFileSync(req.query);
-    console.log(content);
 });
 
 export default router;

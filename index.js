@@ -4,30 +4,19 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import championsRoutes from './routes/Champions';
+import config from './config';
 
 const app = express();
-const PORT = 8000;
+const { dbConfig, port } = config;
 
-const mongoServer = new MongoMemoryServer({
-    instance: {
-        port: 8001,
-        dbName: 'test',
-        dbPath: 'D:\\database\\data',
-        debug: true,
-        storageEngine: 'mmapv1'
-    },
-    debug: true
-});
+console.log(dbConfig);
+
+const mongoServer = new MongoMemoryServer(dbConfig);
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser({uploadDir:__dirname+'/tmp'}));
-app.use(fileUpload({
-    useTempFiles: true,
-    tempFileDir: '/tmp/'
-}))
 
 mongoServer.getConnectionString().then((mongoUri) => {
   const mongooseOpts = {
@@ -63,6 +52,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/', championsRoutes);
 
-app.listen(PORT, () => {
-    console.log('app listen on PORT: ', PORT);
+app.listen(port, () => {
+    console.log('app listen on PORT: ', port);
 })
